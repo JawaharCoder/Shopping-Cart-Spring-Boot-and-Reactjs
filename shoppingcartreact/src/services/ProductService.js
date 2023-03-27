@@ -27,10 +27,6 @@ class ProductService {
         return axios.put(PRODUCT_API_BASE_URL + '/' + productId, product);
     }
 
-    deleteProduct(productId){
-        return axios.delete(PRODUCT_API_BASE_URL + '/' + productId);
-    }
-
     getCartItems(){
         return axios.get(ITEM_API_BASE_URL);
     }

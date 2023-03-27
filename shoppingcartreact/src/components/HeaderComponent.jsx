@@ -21,26 +21,22 @@ class HeaderComponent extends Component {
 
         this.state = {
             showModal : false,
-            cartitems: [],
-            cartitemstotal: 0
+            cartitemstotal: this.props.cartitemstotal
         }
 
         this.handleClose = this.handleClose.bind(this);
-        this.updateCartItemsTotal = this.updateCartItemsTotal.bind(this);
         this.showModalOpen = this.showModalOpen.bind(this);
+        this.props.getCartCount();
     }
 
-    componentDidMount(){
-        ProductService.getCartItems().then((res) => {
-            this.setState({ cartitems: res.data, cartitemstotal: res.data.length});
+    
+    componentWillReceiveProps(props){
+        this.setState({
+            cartitemstotal: props.cartitemstotal
         });
+        // alert(this.props.cartitemstotal);
     }
-
-    updateCartItemsTotal(){
-        ProductService.getCartItems().then((res) => {
-            this.setState({ cartitems: res.data, cartitemstotal: res.data.length});
-        });
-    }
+   
 
     handleClose(){
         //alert('Sign Out Successfully!');
@@ -74,7 +70,6 @@ class HeaderComponent extends Component {
                     </Button>
                     </Modal.Footer>
                 </Modal>
-
                 <Navbar bg="light" expand="lg">
                     <Container>
                     <Navbar.Brand href="/home">Shopping Cart</Navbar.Brand>
@@ -84,8 +79,8 @@ class HeaderComponent extends Component {
                         <Nav.Link href="/home" element={<HomeComponent />}>Home</Nav.Link>
                         <Nav.Link href="/items" element={<ItemComponent />}>Items</Nav.Link>
                         <NavDropdown title={"Cart("+this.state.cartitemstotal+")"} id="basic-nav-dropdown">
-                            <NavDropdown.Item href="/additem">Add Item</NavDropdown.Item>
-                            <NavDropdown.Item href="/checkout">
+                            <NavDropdown.Item href="/items">Add Item</NavDropdown.Item>
+                            <NavDropdown.Item href="/items">
                             Check Out
                             </NavDropdown.Item>
                             <NavDropdown.Item href="/something">Something</NavDropdown.Item>

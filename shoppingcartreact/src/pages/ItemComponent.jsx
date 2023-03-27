@@ -34,6 +34,7 @@ class ItemComponent extends Component {
             console.log(res.data);
             this.setState({ cartitems: res.data});
         });
+        this.props.removeFromCart(ItemId);
     }
 
     render() {
@@ -56,7 +57,7 @@ class ItemComponent extends Component {
                             <th>Product Image</th>
                             <th>Product Name</th>
                             <th>Product Type</th>
-                            <th>   
+                            <th style={{width:'280px'}}>   
                                  <button style={{width:'160px'}} className="btn btn-primary" onClick={this.addProduct}> 
                                  <GrAdd/>&nbsp;&nbsp;&nbsp;Add Product
                                  </button>

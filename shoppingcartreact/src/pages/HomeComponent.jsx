@@ -31,8 +31,10 @@ class HomeComponent extends Component {
     addCartItem = (product) => {
         ProductService.addCartItem(product).then((res) => {
             console.log(res.data);
+            this.props.addToCart(product);
             this.setState({cartitems: res.data, cartitemstotal: res.data.length})
         });
+        
     }
 
     render() {
