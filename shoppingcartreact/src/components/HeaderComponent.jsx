@@ -1,39 +1,96 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Home from '../pages/Home';
+import HomeComponent from '../pages/HomeComponent';
 import Container from 'react-bootstrap/Container';
-import Item from '../pages/Item';
+import ItemComponent from '../pages/ItemComponent';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import ProductService from '../services/ProductService';
+// const [show, setShow] = useState(false);
+// const handleClose = () => setShow(false);
+// const handleShow = () => setShow(true);
 
 class HeaderComponent extends Component {
+
+    
+    
     constructor(props) {
         super(props)
 
         this.state = {
-                 
+            showModal : false,
+            cartitems: [],
+            cartitemstotal: 0
         }
+
+        this.handleClose = this.handleClose.bind(this);
+        this.updateCartItemsTotal = this.updateCartItemsTotal.bind(this);
+        this.showModalOpen = this.showModalOpen.bind(this);
     }
+
+    componentDidMount(){
+        ProductService.getCartItems().then((res) => {
+            this.setState({ cartitems: res.data, cartitemstotal: res.data.length});
+        });
+    }
+
+    updateCartItemsTotal(){
+        ProductService.getCartItems().then((res) => {
+            this.setState({ cartitems: res.data, cartitemstotal: res.data.length});
+        });
+    }
+
+    handleClose(){
+        //alert('Sign Out Successfully!');
+        this.setState({showModal : false});
+        //this.props.history.push('/home');
+    }
+
+    showModalOpen(){
+        this.setState({showModal : true});
+        //this.props.history.push('/home');
+    }
+
+    
+    
 
     render() {
         return (
             <div>
+
+                <Modal show={this.state.showModal} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Sign Out</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Are you sure?</Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={this.handleClose}>
+                        Sign Out
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
+
                 <Navbar bg="light" expand="lg">
                     <Container>
                     <Navbar.Brand href="/home">Shopping Cart</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                        <Nav.Link href="/home" element={<Home />}>Home</Nav.Link>
-                        <Nav.Link href="/items" element={<Item />}>Items</Nav.Link>
-                        <NavDropdown title="Cart(0)" id="basic-nav-dropdown">
+                        <Nav.Link href="/home" element={<HomeComponent />}>Home</Nav.Link>
+                        <Nav.Link href="/items" element={<ItemComponent />}>Items</Nav.Link>
+                        <NavDropdown title={"Cart("+this.state.cartitemstotal+")"} id="basic-nav-dropdown">
                             <NavDropdown.Item href="/additem">Add Item</NavDropdown.Item>
                             <NavDropdown.Item href="/checkout">
                             Check Out
                             </NavDropdown.Item>
                             <NavDropdown.Item href="/something">Something</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/signout">
+                            <NavDropdown.Item onClick={this.showModalOpen}>
                             Sign Out
                             </NavDropdown.Item>
                         </NavDropdown>

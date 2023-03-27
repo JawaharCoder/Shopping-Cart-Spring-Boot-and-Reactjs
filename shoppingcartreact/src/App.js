@@ -6,10 +6,10 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route}
     from 'react-router-dom';
-import Home from './pages/Home';
+import HomeComponent from './pages/HomeComponent';
 import HeaderComponent from './components/HeaderComponent';
 import FooterComponent from './components/FooterComponent';
-import Item from './pages/Item';
+import ItemComponent from './pages/ItemComponent';
 
 function App() {
   return (
@@ -20,8 +20,8 @@ function App() {
       <Router>
       <Navbar />
       <Routes>
-          <Route exact path='/home' element={<Home />} />
-          <Route exact path='/items' element={<Item />} />
+          <Route exact path='/home' element={<HomeComponent />} />
+          <Route exact path='/items' element={<ItemComponent />} />
       </Routes>
       </Router>
 
